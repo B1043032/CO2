@@ -1,10 +1,12 @@
 import streamlit as st
 import numpy as np
 import pandas as pd
+import pickle as pkl
 
 from pycaret.regression import load_model, predict_model,setup
 
 file="data/FuelConsumptionCo2.csv"
+file1="model_pkl.pkl"
 
 df = pd.read_csv(file)
 
@@ -38,10 +40,10 @@ cat_values = [cat_value for cat_value in cat_values if isinstance(cat_value, str
 
 final_features = np.array(num_values + cat_values).reshape(1, -1)
 
-if st.button('Estimate'):
+if st.button('預測'):
     new_data=pd.DataFrame(data=final_features,columns=num_cols + cat_cols)
     prediction=predict_model(estimator=model_cat, data=new_data)
     st.balloons()
     result=int(prediction['prediction_label'][0])
     st.success(
-        f' Estimated CO2 Emission is {result}')
+        f' 預測的二氧化碳排放量為 {result}')
